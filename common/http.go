@@ -54,7 +54,7 @@ func (app *App) PostJSON(url string, src, dst interface{}, headers ...map[string
 		buf = bytes.NewBuffer(b)
 	}
 
-	req, err := http.NewRequest(url, "application/json", buf)
+	req, err := http.NewRequest("POST", url, buf)
 	if err != nil {
 		return err
 	}
