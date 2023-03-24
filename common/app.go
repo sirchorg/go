@@ -75,6 +75,8 @@ func NewApp(projectID string) *App {
 	}
 	app.UseCBOR()
 
+	gin.SetMode(gin.ReleaseMode)
+
 	// init graph
 	app.graph["_"] = graph.NewClient(app.Firestore, "default")
 
