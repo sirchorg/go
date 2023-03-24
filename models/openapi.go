@@ -11,12 +11,14 @@ type ChatCompletionRequest struct {
 }
 
 type GPT3Request struct {
-	Model    string `json:"model"`
-	Messages []struct {
-		Role    string `json:"role"`
-		Content string `json:"content"`
-	} `json:"messages"`
-	Temperature float64 `json:"temperature"`
+	Model       string                `json:"model"`
+	Messages    []*GPT3RequestMessage `json:"messages"`
+	Temperature float64               `json:"temperature"`
+}
+
+type GPT3RequestMessage struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
 }
 
 type ChatCompletionResponse struct {
