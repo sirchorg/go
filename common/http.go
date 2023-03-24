@@ -65,7 +65,9 @@ func (app *App) PostJSON(url string, src, dst interface{}, expectingStatus int, 
 	if len(headers) > 0 {
 		for k, v := range headers[0] {
 			req.Header.Set(k, v)
-			if app.IsDebug() {
+		}
+		if app.IsDebug() {
+			for k, v := range req.Header {
 				println(method, url, k, v)
 			}
 		}
