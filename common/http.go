@@ -43,7 +43,7 @@ func (app *App) GetJSON(url string, dst interface{}) error {
 	return nil
 }
 
-func (app *App) PostJSON(url string, src, dst interface{}) error {
+func (app *App) PostJSON(url string, src, dst interface{}, headers ...map[string]string) error {
 
 	var buf *bytes.Buffer
 	if src != nil {
@@ -54,7 +54,18 @@ func (app *App) PostJSON(url string, src, dst interface{}) error {
 		buf = bytes.NewBuffer(b)
 	}
 
-	resp, err := app.httpClient.Post(url, "application/json", buf)
+	req, err := http.NewRequest(url, "application/json", buf)
+	if err != nil {
+		return err
+	}
+
+	if len(headers) > 0 {
+		for k, v := range headers[0] {
+			req.Header.Set(k, v)
+		}
+	}
+
+	resp, err := app.httpClient.Do(req)
 	if err != nil {
 		return err
 	}
