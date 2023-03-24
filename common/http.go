@@ -46,16 +46,18 @@ func (app *App) GetJSON(url string, dst interface{}) error {
 
 func (app *App) PostJSON(url string, src, dst interface{}, expectingStatus int, headers ...map[string]string) error {
 
+	method := "POST"
+
 	var buf *bytes.Buffer
 	if src != nil {
-		b, err := json.Marshal(src)
+		b, err := app.MarshalJSON(src)
 		if err != nil {
 			return err
 		}
 		buf = bytes.NewBuffer(b)
 	}
 
-	req, err := http.NewRequest("POST", url, buf)
+	req, err := http.NewRequest(method, url, buf)
 	if err != nil {
 		return err
 	}
@@ -63,6 +65,9 @@ func (app *App) PostJSON(url string, src, dst interface{}, expectingStatus int, 
 	if len(headers) > 0 {
 		for k, v := range headers[0] {
 			req.Header.Set(k, v)
+			if app.IsDebug() {
+				println(method, url, k, v)
+			}
 		}
 	}
 
