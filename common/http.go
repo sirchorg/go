@@ -53,6 +53,7 @@ func (app *App) GetJSON(url string, dst interface{}) error {
 
 func (app *App) PostJSON(url string, src, dst interface{}, expectingStatus int, headers ...map[string]string) error {
 
+	isDebug := app.IsDebug()
 	method := "POST"
 
 	var buf *bytes.Buffer
@@ -73,7 +74,7 @@ func (app *App) PostJSON(url string, src, dst interface{}, expectingStatus int, 
 		for k, v := range headers[0] {
 			req.Header.Set(k, v)
 		}
-		if app.IsDebug() {
+		if isDebug {
 			// show the headers so we can see under the hood
 			for k, v := range req.Header {
 				println(method, url, k, fmt.Sprintf("%v", v))
@@ -96,6 +97,12 @@ func (app *App) PostJSON(url string, src, dst interface{}, expectingStatus int, 
 	if err != nil {
 		return err
 	}
+
+	// debug response body
+	if isDebug {
+		println(string(b))
+	}
+
 	if dst != nil {
 		if err := json.Unmarshal(b, dst); err != nil {
 			return err
