@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 )
@@ -43,7 +44,7 @@ func (app *App) GetJSON(url string, dst interface{}) error {
 	return nil
 }
 
-func (app *App) PostJSON(url string, src, dst interface{}, headers ...map[string]string) error {
+func (app *App) PostJSON(url string, src, dst interface{}, expectingStatus int, headers ...map[string]string) error {
 
 	var buf *bytes.Buffer
 	if src != nil {
@@ -69,6 +70,12 @@ func (app *App) PostJSON(url string, src, dst interface{}, headers ...map[string
 	if err != nil {
 		return err
 	}
+
+	if resp.StatusCode != expectingStatus {
+		s := fmt.Sprintf("invalid status code for http post, expecting %d, got %d", expectingStatus, resp.StatusCode)
+		return errors.New(s)
+	}
+
 	b, err := io.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
