@@ -4,11 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"io"
-	"net/http"
 )
 
 func (app *App) GetJSON(url string, dst interface{}) error {
-	resp, err := http.Get(url)
+	resp, err := app.httpClient.Get(url)
 	if err != nil {
 		return err
 	}
@@ -36,7 +35,7 @@ func (app *App) PostJSON(url string, src, dst interface{}) error {
 		buf = bytes.NewBuffer(b)
 	}
 
-	resp, err := http.Post(url, "application/json", buf)
+	resp, err := app.httpClient.Post(url, "application/json", buf)
 	if err != nil {
 		return err
 	}
