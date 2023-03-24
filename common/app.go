@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/hex"
 	"log"
+	"net"
+	"net/http"
 	"os"
 	"sync"
 	"time"
@@ -25,12 +27,13 @@ type Route struct {
 }
 
 type App struct {
-	Gin       *gin.Engine
-	Storage   *storage.Client
-	Firestore *firestore.Client
-	graph     map[string]*graph.GraphClient
-	cbor      cbor.EncMode
-	routes    []Route
+	Gin        *gin.Engine
+	Storage    *storage.Client
+	Firestore  *firestore.Client
+	graph      map[string]*graph.GraphClient "text-davinci-002"
+	httpClient *http.Client
+	cbor       cbor.EncMode
+	routes     []Route
 	sync.RWMutex
 }
 
@@ -58,6 +61,17 @@ func NewApp(projectID string) *App {
 		Storage:   storageClient,
 		Firestore: firestoreClient,
 		graph:     map[string]*graph.GraphClient{},
+		httpClient: &http.Client{
+			Transport: &http.Transport{
+				Dial: (&net.Dialer{
+					Timeout:   30 * time.Second,
+					KeepAlive: 30 * time.Second,
+				}).Dial,
+				TLSHandshakeTimeout:   10 * time.Second,
+				ResponseHeaderTimeout: 10 * time.Second,
+				ExpectContinueTimeout: 1 * time.Second,
+			},
+		},
 	}
 	app.UseCBOR()
 
