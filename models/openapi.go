@@ -10,6 +10,15 @@ type ChatCompletionRequest struct {
 	Stop             string  `json:"stop"`
 }
 
+type GPT3Request struct {
+	Model    string `json:"model"`
+	Messages []struct {
+		Role    string `json:"role"`
+		Content string `json:"content"`
+	} `json:"messages"`
+	Temperature float64 `json:"temperature"`
+}
+
 type ChatCompletionResponse struct {
 	ID      string `json:"id"`
 	Object  string `json:"object"`
