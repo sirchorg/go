@@ -27,10 +27,17 @@ func (app *App) ParseJSON(r *http.Request, dst interface{}) error {
 }
 
 func (app *App) GetJSON(url string, dst interface{}) error {
+
 	resp, err := app.httpClient.Get(url)
 	if err != nil {
 		return err
 	}
+	expectingStatus := 200
+	if resp.StatusCode != expectingStatus {
+		s := fmt.Sprintf("invalid status code for http post, expecting %d, got %d", expectingStatus, resp.StatusCode)
+		return errors.New(s)
+	}
+
 	b, err := io.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
@@ -67,6 +74,7 @@ func (app *App) PostJSON(url string, src, dst interface{}, expectingStatus int, 
 			req.Header.Set(k, v)
 		}
 		if app.IsDebug() {
+			// show the headers so we can see under the hood
 			for k, v := range req.Header {
 				println(method, url, k, fmt.Sprintf("%v", v))
 			}
