@@ -2,6 +2,7 @@ package cloudfunc
 
 import (
 	"encoding/json"
+	"os"
 
 	"fmt"
 	"io/ioutil"
@@ -9,6 +10,14 @@ import (
 	"net/http"
 	"strings"
 )
+
+func GetSecretFromVolume(path string) (string, error) {
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	return string(b), nil
+}
 
 func HandleCORS(w http.ResponseWriter, r *http.Request) bool {
 	if r.Method == "OPTIONS" {

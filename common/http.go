@@ -88,7 +88,7 @@ func (app *App) PostJSON(url string, src, dst interface{}, expectingStatus int, 
 	}
 
 	if resp.StatusCode != expectingStatus {
-		s := fmt.Sprintf("invalid status code for http post, expecting %d, got %d %s", expectingStatus, resp.StatusCode, resp.Status)
+		s := fmt.Sprintf("invalid status code for http post, expecting %d, got %d, %s", expectingStatus, resp.StatusCode, resp.Status)
 		return errors.New(s)
 	}
 
