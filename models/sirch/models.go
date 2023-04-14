@@ -16,3 +16,8 @@ type FeedItem struct {
 	Link  string
 	Time  int64
 }
+
+type User struct {
+	Email string
+	Role  string
+}
