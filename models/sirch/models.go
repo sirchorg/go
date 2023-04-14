@@ -5,6 +5,7 @@ type Organization struct {
 }
 
 type Feed struct {
+	ID        string
 	Type      string
 	URL       string
 	Frequency int
