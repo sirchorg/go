@@ -1,7 +1,8 @@
 package models
 
 type Organization struct {
-	Name string
+	Name             string
+	DefaultFrequency int
 }
 
 type Feed struct {
