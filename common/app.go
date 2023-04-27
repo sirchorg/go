@@ -65,7 +65,6 @@ func NewApp(projectID string) *App {
 	}
 
 	app := &App{
-		Gin:       gin.Default(),
 		Storage:   storageClient,
 		Firestore: firestoreClient,
 		Pubsub:    pubsubClient,
@@ -90,6 +89,12 @@ func NewApp(projectID string) *App {
 	app.graph["_"] = graph.NewClient(app.Firestore, "default")
 
 	return app
+}
+
+func (app *App) UseGin() {
+	app.Lock()
+	app.Gin = gin.Default()
+	app.Unlock()
 }
 
 func (app *App) Graph(dbNames ...string) *graph.GraphClient {
