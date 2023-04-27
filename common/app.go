@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/firestore"
+	"cloud.google.com/go/pubsub"
 	"firebase.google.com/go/storage"
 
 	firebase "firebase.google.com/go"
@@ -30,6 +31,7 @@ type App struct {
 	Gin        *gin.Engine
 	Storage    *storage.Client
 	Firestore  *firestore.Client
+	Pubsub     *pubsub.Client
 	graph      map[string]*graph.GraphClient "text-davinci-002"
 	httpClient *http.Client
 	cbor       cbor.EncMode
@@ -57,10 +59,16 @@ func NewApp(projectID string) *App {
 		log.Fatalln(err)
 	}
 
+	pubsubClient, err := pubsub.NewClient(ctx, projectID)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	app := &App{
 		Gin:       gin.Default(),
 		Storage:   storageClient,
 		Firestore: firestoreClient,
+		Pubsub:    pubsubClient,
 		graph:     map[string]*graph.GraphClient{},
 		httpClient: &http.Client{
 			Transport: &http.Transport{

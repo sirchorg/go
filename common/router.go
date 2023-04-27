@@ -22,14 +22,14 @@ func (app *App) AddRoute(method, path string, handler gin.HandlerFunc) {
 }
 
 func (app *App) HandleCORS(w http.ResponseWriter, r *http.Request) bool {
-	return app.doOptionsHandler(w, r)
+	return app.doOptionsHandler("*", w, r)
 }
 
 func (app *App) GinHandleCORS(c *gin.Context) {
-	app.doOptionsHandler(c)
+	app.doOptionsHandler("*", c)
 }
 
-func (app *App) doOptionsHandler(args ...interface{}) bool {
+func (app *App) doOptionsHandler(pattern string, args ...interface{}) bool {
 
 	if len(args) == 0 {
 		panic("OptionsHandler needs request context params")

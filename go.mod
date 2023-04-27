@@ -18,6 +18,7 @@ require (
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/iam v0.13.0 // indirect
 	cloud.google.com/go/longrunning v0.4.1 // indirect
+	cloud.google.com/go/pubsub v1.30.0 // indirect
 	firebase.google.com/go/v4 v4.11.0 // indirect
 	github.com/MicahParks/keyfunc v1.9.0 // indirect
 	github.com/bytedance/sonic v1.8.0 // indirect
