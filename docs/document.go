@@ -5,33 +5,48 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ninjapunkgirls/sdk/cloudfunc"
+	"github.com/sirchorg/go/common"
+	"golang.org/x/crypto/sha3"
 )
 
+var app *common.App
+
+func init() {
+	app = &common.App{}
+	app.UseCBOR()
+}
+
+func EmptyDocument() *Document {
+	doc := &Document{}
+	return doc
+}
+
+func NewDocument(bucketID string, class string, data map[string]interface{}) *Document {
+	doc := &Document{
+		Bucket: bucketID,
+		Class:  class,
+		Data:   data,
+	}
+	return doc
+}
+
 type Document struct {
-	client   *Client
 	Bucket   string
 	Lat, Lng float64
-	Place    Place
+	Place    []string
 	Parent   string
 	Class    string
 	Data     map[string]interface{}
 }
 
-func (self *Document) Serialise() (string, error) {
-	s, err := cloudfunc.CompactSerial(self)
-	if err != nil {
-		return "", err
-	}
-	return s, nil
-}
-
 func (self *Document) ID() string {
-	serial, err := self.Serialise()
+	serial, err := app.MarshalCBOR(self)
 	if err != nil {
 		panic(err)
 	}
-	return hex.EncodeToString(Hash([]byte(serial)))
+	h := sha3.New224()
+	h.Write([]byte(serial))
+	return hex.EncodeToString(h.Sum(nil))
 }
 
 func (self *Document) TimePrefix(t time.Time) string {
