@@ -2,10 +2,10 @@ package docs
 
 import (
 	"bytes"
-	"strings"
 	"encoding/hex"
 	"encoding/json"
 	"strconv"
+	"strings"
 )
 
 type PlaceInput struct {
@@ -78,11 +78,27 @@ func (place *Place) ParentHashes() []string {
 func NewPlace(input string) Place {
 
 	ss := strings.Split(input, ", ")
-    last := len(ss) - 1
-    for i := 0; i < len(ss)/2; i++ {
-        ss[i], ss[last-i] = ss[last-i], ss[i]
-    }
 
+	var list []string
+
+	var skip bool
+	const alpha = " -.,abcdefghijklmnopqrstuvwxyz"
+	for _, line := range ss {
+		for _, char := range line {
+			if !strings.Contains(alpha, strings.ToLower(string(char))) {
+				skip = true
+				break
+			}
+		}
+		if !skip {
+			list = append(list, strings.TrimSpace(line))
+		}
+	}
+
+	last := len(ss) - 1
+	for i := 0; i < len(ss)/2; i++ {
+		ss[i], ss[last-i] = ss[last-i], ss[i]
+	}
 
 	place := Place{
 		Details: ss,
