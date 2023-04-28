@@ -3,9 +3,7 @@ package docs
 import (
 	"context"
 	"crypto/sha1"
-	"fmt"
 	"log"
-	"time"
 
 	"cloud.google.com/go/firestore"
 
@@ -60,7 +58,6 @@ func (client *Client) NewDocument(bucketID string, where Place, class string, da
 		client: client,
 		Bucket: bucketID,
 		Class:  class,
-		Time:   fmt.Sprintf("%d", time.Now().UTC().Unix()),
 		Place:  where,
 		Data:   data,
 	}
