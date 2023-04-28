@@ -53,7 +53,7 @@ func (client *Client) EmptyDocument() *Document {
 	return doc
 }
 
-func (client *Client) NewDocument(bucketID string, where Place, class string, data interface{}) *Document {
+func (client *Client) NewDocument(bucketID string, where Place, class string, data map[string]interface{}) *Document {
 	doc := &Document{
 		client: client,
 		Bucket: bucketID,

@@ -15,7 +15,7 @@ type Document struct {
 	Place    Place
 	Parent   string
 	Class    string
-	Data     interface{}
+	Data     map[string]interface{}
 }
 
 func (self *Document) Serialise() (string, error) {
