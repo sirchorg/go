@@ -16,6 +16,13 @@ func init() {
 	app.UseCBOR()
 }
 
+func New(bucketID string) *Document {
+	doc := &Document{
+		Bucket: bucketID,
+	}
+	return doc
+}
+
 func EmptyDocument() *Document {
 	doc := &Document{}
 	return doc
