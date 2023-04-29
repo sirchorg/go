@@ -3,6 +3,7 @@ package docs
 import (
 	"encoding/hex"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/sirchorg/go/common"
@@ -46,7 +47,7 @@ type Document struct {
 	Place    []string
 	Parent   string
 	Class    string
-	Data     map[string]interface{}
+	Data     interface{}
 }
 
 func (self *Document) ID() string {
@@ -55,8 +56,9 @@ func (self *Document) ID() string {
 		panic(err)
 	}
 	h := sha3.New224()
-	h.Write([]byte(serial))
-	return hex.EncodeToString(h.Sum(nil))
+	n, _ := h.Write([]byte(serial))
+	// encode the length of the document into its id
+	return hex.EncodeToString(h.Sum(nil)) + "-" + strconv.Itoa(n)
 }
 
 func (self *Document) TimePrefix(t time.Time) string {

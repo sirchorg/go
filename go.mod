@@ -15,6 +15,8 @@ require (
 	github.com/stretchr/testify v1.8.2
 )
 
+require github.com/go-resty/resty/v2 v2.7.0
+
 require (
 	cloud.google.com/go v0.110.0 // indirect
 	cloud.google.com/go/compute v1.18.0 // indirect
