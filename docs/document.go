@@ -32,15 +32,6 @@ func EmptyDocument() *Document {
 	return doc
 }
 
-func NewDocument(bucketID string, class string, data map[string]interface{}) *Document {
-	doc := &Document{
-		Bucket: bucketID,
-		Class:  class,
-		Data:   data,
-	}
-	return doc
-}
-
 type Document struct {
 	Bucket   string
 	Lat, Lng float64
@@ -58,7 +49,7 @@ func (self *Document) ID() string {
 	h := sha3.New224()
 	n, _ := h.Write([]byte(serial))
 	// encode the length of the document into its id
-	return hex.EncodeToString(h.Sum(nil)) + "-" + strconv.Itoa(n)
+	return hex.EncodeToString(h.Sum(nil)[:16]) + "-" + strconv.Itoa(n)
 }
 
 func (self *Document) TimePrefix(t time.Time) string {
