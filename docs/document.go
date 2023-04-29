@@ -16,7 +16,10 @@ func init() {
 	app.UseCBOR()
 }
 
-func New(bucketID string) *Document {
+func New(salt, bucketName string) *Document {
+
+	bucketID := "z" + hex.EncodeToString(app.SHA256(append([]byte(bucketName), []byte(salt)...))[:30])
+
 	doc := &Document{
 		Bucket: bucketID,
 	}
