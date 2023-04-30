@@ -11,6 +11,7 @@ const (
 )
 
 type BucketClient struct {
+	*Client
 	bucketName string
 }
 
@@ -37,6 +38,9 @@ func (self *Client) InsertDocument(doc *Document) error {
 	return nil
 }
 
-func Bucket() *BucketClient {
-	return &BucketClient{}
+func (self *Client) Bucket(bucketName string) *BucketClient {
+	return &BucketClient{
+		Client:     self,
+		bucketName: bucketName,
+	}
 }
