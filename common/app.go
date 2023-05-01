@@ -28,15 +28,16 @@ type Route struct {
 }
 
 type App struct {
-	Gin        *gin.Engine
-	Storage    *storage.Client
-	Firestore  *firestore.Client
-	Pubsub     *pubsub.Client
-	graph      map[string]*graph.GraphClient "text-davinci-002"
-	httpClient *http.Client
-	cbor       cbor.EncMode
-	routes     []Route
-	debugMode  bool
+	Gin           *gin.Engine
+	Storage       *storage.Client
+	Firestore     *firestore.Client
+	Pubsub        *pubsub.Client
+	graph         map[string]*graph.GraphClient "text-davinci-002"
+	httpClient    *http.Client
+	jwtSigningKey []byte
+	cbor          cbor.EncMode
+	routes        []Route
+	debugMode     bool
 	sync.RWMutex
 }
 
@@ -93,8 +94,14 @@ func NewApp(projectID string) *App {
 
 func (app *App) UseGin() {
 	app.Lock()
+	defer app.Unlock()
 	app.Gin = gin.Default()
-	app.Unlock()
+}
+
+func (app *App) UseJWT(signingKey string) {
+	app.Lock()
+	defer app.Unlock()
+	app.jwtSigningKey = []byte(signingKey)
 }
 
 func (app *App) Graph(dbNames ...string) *graph.GraphClient {
