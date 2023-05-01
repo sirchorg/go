@@ -15,9 +15,10 @@ type Feed struct {
 }
 
 type FeedItem struct {
-	Title string
-	Link  string
-	Time  int64
+	Title  string
+	Link   string
+	Time   int64
+	Scores map[string]float64
 }
 
 type User struct {
