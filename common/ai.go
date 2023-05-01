@@ -36,5 +36,9 @@ func (app *App) ParseContentForObjectOrArrayJSON(content string, dst interface{}
 	// make sure we ignore subordinate drivel
 	j := content[in : out+1]
 
+	if app.debugMode {
+		println(j)
+	}
+
 	return json.Unmarshal([]byte(j), dst)
 }
