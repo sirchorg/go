@@ -15,6 +15,7 @@ type Feed struct {
 }
 
 type FeedItem struct {
+	Org    string
 	Title  string
 	Link   string
 	Time   int64
