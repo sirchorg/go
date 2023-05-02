@@ -2,6 +2,7 @@ package common
 
 import (
 	"encoding/json"
+	"errors"
 	"strings"
 )
 
@@ -12,6 +13,10 @@ func (app *App) ParseContentForObjectOrArrayJSON(content string, dst interface{}
 	inA := strings.Index(content, "[")
 	outO := strings.LastIndex(content, "}")
 	outA := strings.LastIndex(content, "]")
+
+	if inO < 0 || inA < 0 || outO < 0 || outA < 0 {
+		return errors.New("out of bounds error, no array or object?")
+	}
 
 	if app.debugMode {
 		println(">>", inO, string(content[inO]), inA, string(content[inA]))
