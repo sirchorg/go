@@ -38,11 +38,14 @@ func (app *App) ParseContentForObjectOrArrayJSON(content string, dst interface{}
 		}
 	}
 
-	// make sure we ignore subordinate drivel
+	// make sure we ignore subordinate drivel (safely)
+	if out >= len(content) {
+		return errors.New("preventing panid when trimming content")
+	}
 	j := content[in : out+1]
 
 	if app.debugMode {
-		println(j)
+		println("DEBUG", j)
 	}
 
 	return json.Unmarshal([]byte(j), dst)
