@@ -14,7 +14,7 @@ func (app *App) ParseContentForObjectOrArrayJSON(content string, dst interface{}
 	outO := strings.LastIndex(content, "}")
 	outA := strings.LastIndex(content, "]")
 
-	if inO < 0 || inA < 0 || outO < 0 || outA < 0 {
+	if (inO < 0 || inA < 0) && (outO < 0 || outA < 0) {
 		return errors.New("out of bounds error, no array or object?")
 	}
 
