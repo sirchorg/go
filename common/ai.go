@@ -20,7 +20,7 @@ func (app *App) ParseContentForObjectOrArrayJSON(content string, dst interface{}
 		println(">>", outO, string(content[outO]), outA, string(content[outA]))
 	}
 
-	if (inO < 0 || inA < 0) && (outO < 0 || outA < 0) {
+	if (inO < 0 || outO < 0) && (inA < 0 || outA < 0) {
 		return fmt.Errorf("out of bounds error, no array or object? %d, %d, %d, %d", inO, inA, outO, outA)
 	}
 
