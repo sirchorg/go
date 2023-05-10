@@ -9,23 +9,15 @@ import (
 	"cloud.google.com/go/storage"
 )
 
-func (app *App) GetBucket(bucketName string) (*storage.BucketHandle, error) {
-	bucket, err := app.Storage.Bucket(bucketName)
-	if err != nil {
-		return nil, err
-	}
-	return bucket, nil
-}
-
-func (app *App) GetObjectAndUnmarshal(bucket *storage.BucketHandle, objectName string, dst interface{}) error {
-	b, err := app.GetObject(bucket, objectName)
+func (self *GCPClients) GetObjectAndUnmarshal(bucket *storage.BucketHandle, objectName string, dst interface{}) error {
+	b, err := self.GetObject(bucket, objectName)
 	if err != nil {
 		return err
 	}
 	return json.Unmarshal(b, dst)
 }
 
-func (app *App) GetObject(bucket *storage.BucketHandle, objectName string) ([]byte, error) {
+func (self *GCPClients) GetObject(bucket *storage.BucketHandle, objectName string) ([]byte, error) {
 	r, err := bucket.Object(objectName).NewReader(context.Background())
 	if err != nil {
 		return nil, fmt.Errorf("storage.GetObject: %w", err)

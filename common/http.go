@@ -28,14 +28,17 @@ func (app *App) ParseJSON(r *http.Request, dst interface{}) error {
 
 func (app *App) GetJSON(url string, dst interface{}) error {
 
-	resp, err := app.httpClient.Get(url)
+	resp, err := app.HTTP().Get(url)
 	if err != nil {
 		return err
 	}
-	expectingStatus := 200
+	expectingStatus := http.StatusOK
 	if resp.StatusCode != expectingStatus {
-		s := fmt.Sprintf("invalid status code for http post, expecting %d, got %d", expectingStatus, resp.StatusCode)
-		return errors.New(s)
+		return fmt.Errorf(
+			"invalid status code for http post, expecting %d, got %d",
+			expectingStatus,
+			resp.StatusCode,
+		)
 	}
 
 	b, err := io.ReadAll(resp.Body)
