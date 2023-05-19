@@ -53,7 +53,7 @@ func (self *GCPClients) Firestore() *firestore.Client {
 	if client == nil {
 		self.Lock()
 		var err error
-		self.firestore, err = self.firebase.Firestore(context.Background())
+		self.firestore, err = self.Firebase().Firestore(context.Background())
 		if err != nil {
 			log.Fatalln(err)
 		}
