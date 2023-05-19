@@ -25,19 +25,15 @@ type GCPClients struct {
 // Firebase lazy loads the client when needed
 func (self *GCPClients) Firebase() *firebase.App {
 
-	self.RLock()
 	client := self.firebase
-	self.RUnlock()
 
 	if client == nil {
-		self.Lock()
 		conf := &firebase.Config{ProjectID: self.projectID}
 		var err error
 		self.firebase, err = firebase.NewApp(context.Background(), conf)
 		if err != nil {
 			log.Fatalln(err)
 		}
-		defer self.Unlock()
 		return self.firebase
 	}
 	return client
