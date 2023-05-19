@@ -11,6 +11,7 @@ import (
 
 type App struct {
 	Clients
+	AWSClients
 	GCPClients
 	jwtSigningKey []byte
 	cbor          cbor.EncMode
