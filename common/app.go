@@ -23,6 +23,7 @@ type App struct {
 func NewApp() *App {
 
 	app := &App{}
+	app.newClients()
 
 	return app
 }

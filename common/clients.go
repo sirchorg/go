@@ -6,12 +6,21 @@ import (
 	"sync"
 	"time"
 
+	"github.com/algolia/algoliasearch-client-go/v3/algolia/search"
 	"github.com/gin-gonic/gin"
 )
 
+func (app *App) newClients() Clients {
+	return Clients{
+		app: app,
+	}
+}
+
 type Clients struct {
+	app        *App
 	gin        *gin.Engine
 	httpClient *http.Client
+	algolia    *search.Client
 	sync.RWMutex
 }
 
@@ -57,6 +66,10 @@ func (self *Clients) HTTP() *http.Client {
 	}
 
 	return client
+}
+
+func (self *Clients) Algolia() *search.Client {
+	return self.algolia
 }
 
 /*

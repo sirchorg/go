@@ -2,7 +2,9 @@ package common
 
 import (
 	"log"
+	"os"
 
+	"github.com/algolia/algoliasearch-client-go/v3/algolia/search"
 	"github.com/fxamacker/cbor/v2"
 )
 
@@ -24,6 +26,15 @@ func (app *App) UseCBOR() {
 		log.Fatalln(err)
 	}
 	app.cbor = cb
+}
+
+// UseAlgolia initialises the algolia client
+func (app *App) UseAlgolia(appID, secretPath string) {
+	secretBytes, err := os.ReadFile(secretPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	app.Clients.algolia = search.NewClient(appID, string(secretBytes))
 }
 
 // UseJWT caches a secret signing key in memory
