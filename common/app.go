@@ -1,8 +1,6 @@
 package common
 
 import (
-	"encoding/hex"
-	"os"
 	"sync"
 	"time"
 
@@ -42,8 +40,4 @@ func (app *App) IsDebug() bool {
 
 func (app *App) TimeNow() time.Time {
 	return time.Now().UTC()
-}
-
-func (app *App) SeedDigest(input string) string {
-	return hex.EncodeToString(app.SHA256([]byte(os.Getenv("SEED")), []byte(input)))
 }

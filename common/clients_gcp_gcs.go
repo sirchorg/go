@@ -41,7 +41,7 @@ func (self *GCPClients) ListObjectsGCS(ctx context.Context, bucketName, prefix s
 		var attrs *storage.ObjectAttrs
 		attrs, err = it.Next()
 		if err == iterator.Done {
-			break
+			return names, nil
 		}
 		if err != nil {
 			return

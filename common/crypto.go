@@ -10,12 +10,17 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
+	"os"
 )
 
 func (api *App) Token256() string {
 	b := make([]byte, 32)
 	rand.Read(b)
 	return hex.EncodeToString(b)
+}
+
+func (app *App) SeedDigest(input string) string {
+	return hex.EncodeToString(app.SHA256([]byte(os.Getenv("SEED")), []byte(input)))
 }
 
 func (app *App) SHA1(b []byte) []byte {
